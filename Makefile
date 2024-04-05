@@ -3,6 +3,8 @@ CORE := iob_soc
 SIMULATOR ?= icarus
 BOARD ?= CYCLONEV-GT-DK
 
+SYNTHETYZER ?= yosys
+
 DISABLE_LINT:=1
 
 include submodules/LIB/setup.mk
@@ -47,7 +49,7 @@ fpga-test:
 	make clean setup fpga-run BOARD=AES-KU040-DB-G INIT_MEM=0 USE_EXTMEM=1 
 
 syn-build: clean
-	nix-shell --run "make setup && make -C ../$(CORE)_V*/ syn-build"
+	nix-shell --run "make setup && make -C ../$(CORE)_V*/ syn-build SYNTHETYZER=$(SYNTHETYZER)"
 
 doc-build:
 	nix-shell --run 'make clean setup && make -C ../$(CORE)_V*/ doc-build'

@@ -9,6 +9,8 @@ include ../../config_build.mk
 
 REMOTE_BUILD_DIR=$(USER)/$(BUILD_DIR_NAME)
 REMOTE_SYN_DIR=$(REMOTE_BUILD_DIR)/hardware/syn
+PDK_ROOT := $(CURDIR)
+export PDK_ROOT
 
 #include the module's headers and sources
 VHDR+=$(wildcard ../src/*.vh) $(wildcard ./src/*.vh)
@@ -28,12 +30,17 @@ OUTPUT_DIR=results
 #default node
 NODE ?= umc130
 
+#open PDK NODE
+Open_NODE ?= sky130
+Open_hash ?= 6d4d11780c40b20ee63cc98e645307a9bf2b2ab8
+
 SYN_SERVER=$(CADENCE_SERVER)
 SYN_USER=$(CADENCE_USER)
 SYN_SSH_FLAGS=$(CADENCE_SSH_FLAGS)
 SYN_SCP_FLAGS=$(CADENCE_SCP_FLAGS)
 SYN_SYNC_FLAGS=$(CADENCE_SYNC_FLAGS)
 
+SYNTHETYZER ?= genus
 synth: $(VHDR) $(VSRC)
 	genus -batch -files build.tcl
 
@@ -42,7 +49,9 @@ UFLAGS+=COV=$(COV)
 UFLAGS+=COV_TEST=$(COV_TEST)
 
 build: $(VHDR) $(VSRC) config.tcl
-ifeq ($(SYN_SERVER),)
+ifeq ($(SYNTHETYZER),yosys)
+	make pdk_install
+else ifeq ($(SYN_SERVER),)
 	make synth
 else
 	ssh $(SYN_SSH_FLAGS) $(SYN_USER)@$(SYN_SERVER) 'if [ ! -d $(REMOTE_BUILD_DIR) ]; then mkdir -p $(REMOTE_BUILD_DIR); fi'
@@ -69,4 +78,8 @@ ifneq ($(SYN_SERVER),)
 	ssh $(SYN_SSH_FLAGS) $(SYN_USER)@$(SYN_SERVER) 'if [ -f $(REMOTE_SYN_DIR)/Makefile ]; then make -C $(REMOTE_SYN_DIR) $@; fi'
 endif
 
-.PHONY: run clean config.tcl synth
+pdk_install:
+	volare enable --pdk $(Open_NODE) $(Open_hash)
+
+
+.PHONY: run clean config.tcl synth pdk_install
