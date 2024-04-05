@@ -51,6 +51,7 @@ UFLAGS+=COV_TEST=$(COV_TEST)
 build: $(VHDR) $(VSRC) config.tcl
 ifeq ($(SYNTHETYZER),yosys)
 	make pdk_install
+	yosys -s yosys_build.tcl
 else ifeq ($(SYN_SERVER),)
 	make synth
 else

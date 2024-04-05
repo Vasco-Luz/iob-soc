@@ -2,9 +2,8 @@
 
 let
   magic = import ./magic.nix { inherit pkgs; };
-   yosys_abc = import ./yosys-abc.nix { inherit pkgs; };
+  yosys_abc = import ./yosys-abc.nix { inherit pkgs; };
 in
-
 
 pkgs.mkShell {
   name = "iob-shell";
@@ -45,5 +44,9 @@ pkgs.mkShell {
     })
     magic
     yosys_abc
+    # Add Tcl packages
+    pkgs.tcl
+    pkgs.tcllib
+    pkgs.tclx
   ];
 }
