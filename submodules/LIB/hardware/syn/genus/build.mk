@@ -30,7 +30,7 @@ synth: $(VHDR) $(VSRC)
 UFLAGS+=COV=$(COV)
 UFLAGS+=COV_TEST=$(COV_TEST)
 
-build: $(VHDR) $(VSRC) genus/config.tcl
+build: $(VHDR) $(VSRC) config.tcl
 ifeq ($(SYN_SERVER),)
 	make synth
 else
