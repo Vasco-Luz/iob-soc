@@ -14,6 +14,9 @@ BSP_H ?= software/src/bsp.h
 SIM_DIR := hardware/simulation
 BOARD_DIR := $(shell find -name $(BOARD) -type d -print -quit)
 
+NODE ?= 
+SYNTHETISER ?= genus
+
 #
 # Create bsp.h from bsp.vh
 #

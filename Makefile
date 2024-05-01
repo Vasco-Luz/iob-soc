@@ -10,6 +10,9 @@ include submodules/LIB/setup.mk
 INIT_MEM ?= 1
 USE_EXTMEM ?= 0
 
+NODE ?= 
+SYNTHETISER ?= genus
+
 ifeq ($(INIT_MEM),1)
 SETUP_ARGS += INIT_MEM
 endif
@@ -47,7 +50,7 @@ fpga-test:
 	make clean setup fpga-run BOARD=AES-KU040-DB-G INIT_MEM=0 USE_EXTMEM=1 
 
 syn-build: clean
-	nix-shell --run "make setup && make -C ../$(CORE)_V*/ syn-build"
+	nix-shell --run "make setup && make -C ../$(CORE)_V*/ syn-build SYNTHETISER=$(SYNTHETISER)"
 
 doc-build:
 	nix-shell --run 'make clean setup && make -C ../$(CORE)_V*/ doc-build'
