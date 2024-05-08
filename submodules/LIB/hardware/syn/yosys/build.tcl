@@ -1,12 +1,15 @@
-
+ 
 
 # Read the Verilog files
-read_verilog -v $VSRC
+
+
+yosys read_verilog -I../simulation/src -I../src -defer ../src/*.v 
+
 # Synthesize the design
-synth
+yosys synth
 
 # Optimize the design
-opt
+yosys opt
 
 # Generate the RTL netlist
-write_verilog -noattr -noexpr synthesized_netlist.v
+yosys write_verilog -noattr -noexpr synthesized_netlist.v

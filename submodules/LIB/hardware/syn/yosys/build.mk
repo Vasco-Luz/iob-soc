@@ -10,9 +10,10 @@ UFLAGS+=COV=$(COV)
 UFLAGS+=COV_TEST=$(COV_TEST)
 
 #default node
+VHDR+=$(../simulation/src/bsp.vh)
 
+build:
+	yosys yosys/build.tcl 
+	
+.PHONY: build
 
-build: 
-	yosys -f verilog $(VSRC) $(VHDR) -s yosys/build.tcl
-
-.PHONY: build 
