@@ -3,9 +3,9 @@
 # Read the Verilog files
 
 
-yosys read_verilog -sv -formal -I../simulation/src -I../src -defer ../src/*.vh ../src/*.v
+yosys read_verilog -I../simulation/src -I../src -defer ../src/*.v
 # Synthesize the design
-yosys synth -auto-top 
+yosys synth -top iob_soc
 
 # Optimize the design
 yosys opt
